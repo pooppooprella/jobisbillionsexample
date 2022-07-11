@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:flutter/material.dart';
 import 'package:jobisbillionsexample/config/screen_main/picture_list.dart';
 
