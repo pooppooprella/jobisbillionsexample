@@ -49,7 +49,6 @@ class ScreenMainState extends State<ScreenMain>
         : sharedPreferences.setStringList(sharedKey, []);
     debugPrint('${sharedPreferences.getStringList(sharedKey)}');
     sharedList_str = sharedPreferences.getStringList(sharedKey)!;
-    debugPrint('dddd initcount ${sharedList_str.length}');
 
     for (var i = 0; i < sharedList_str.length; i++) {
       providermain.getSharedList_document.add(Documents.fromJson(
@@ -59,6 +58,21 @@ class ScreenMainState extends State<ScreenMain>
       providermain.getSharedList_document[i].flag = true;
     }
     setState(() {});
+  }
+
+//GridView ScrollListener
+  scrollListener() async {
+    if (_scrollController.offset ==
+            _scrollController.position.maxScrollExtent &&
+        !_scrollController.position.outOfRange) {
+      debugPrint('Scroll BOTTOM');
+      searchPage = searchPage + 1;
+      requestEGet();
+    } else if (_scrollController.offset ==
+            _scrollController.position.minScrollExtent &&
+        !_scrollController.position.outOfRange) {
+      debugPrint('Scroll TOP');
+    }
   }
 
   @override
@@ -144,20 +158,6 @@ class ScreenMainState extends State<ScreenMain>
         controller: _tabController,
       ),
     );
-  }
-
-  scrollListener() async {
-    if (_scrollController.offset ==
-            _scrollController.position.maxScrollExtent &&
-        !_scrollController.position.outOfRange) {
-      debugPrint('Scroll BOTTOM');
-      searchPage = searchPage + 1;
-      requestEGet();
-    } else if (_scrollController.offset ==
-            _scrollController.position.minScrollExtent &&
-        !_scrollController.position.outOfRange) {
-      debugPrint('Scroll TOP');
-    }
   }
 
   ChangeNotifierProvider getGridView(
@@ -298,6 +298,7 @@ class ScreenMainState extends State<ScreenMain>
     setState(() {});
   }
 
+//통신결과 response 부분
   @override
   void actionPost(String primitive, response) async {
     debugPrint(response.toString());
@@ -324,6 +325,7 @@ class ScreenMainState extends State<ScreenMain>
     setState(() {});
   }
 
+//검색어 입력 및 조회 버튼
   Container searchBox(Size size) {
     // final myController = TextEditingController();
     return Container(
@@ -351,6 +353,7 @@ class ScreenMainState extends State<ScreenMain>
     );
   }
 
+//목록 조회 통신
   void requestEGet() {
     var params = {
       'query': searchStr,
